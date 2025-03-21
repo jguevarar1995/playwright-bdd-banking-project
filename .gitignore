@@ -11,7 +11,7 @@ npm-debug.log
 
 # tests
 cucumber-report
-**/.features-gen/**/*.spec.js
+**/.features-gen/features/**/*.spec.js
 
 .nx
 
