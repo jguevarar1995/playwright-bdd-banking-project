@@ -1,0 +1,26 @@
+{
+  "name": "playwright-bdd-banking-project",
+  "version": "1.0.0",
+  "description": "An automation testing project, using the Playwright-BDD framework with Typescript",
+  "scripts": {
+    "test": "npx bddgen && npx playwright test",
+    "report": "npx http-server ./cucumber-report -c-1 -o index.html"
+  },
+  "keywords": [
+    "Playwright",
+    "BDD",
+    "Playwright-BDD",
+    "Typescript"
+  ],
+  "author": "Juan Guevara",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.51.1",
+    "@types/node": "^22.13.10",
+    "http-server": "^14.1.1",
+    "playwright-bdd": "^8.2.1",
+    "prettier": "^3.5.3",
+    "prettier-plugin-gherkin": "^3.1.2",
+    "typescript": "^5.8.2"
+  }
+}
