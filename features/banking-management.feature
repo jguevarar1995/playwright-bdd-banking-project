@@ -1,9 +1,9 @@
+@e2e
 Feature: Banking Management
 
   Background:
     Given user login as "manager"
 
-  @test
   Scenario Outline: Add customer into Banking App
     When add a new customer with:
       | first_name            | last_name            | postal_code            |
@@ -16,7 +16,6 @@ Feature: Banking Management
       | Juan                | Guevara            | 110231               |
       | Pepito              | Pérez              | 06500                |
 
-  @e2e
   Scenario: Attempt to duplicate registered customer
     When add a new customer with:
       | first_name | last_name  | postal_code |
@@ -26,7 +25,6 @@ Feature: Banking Management
     Then user should see an alert indicating user already exists
     
 
-  @test
   Scenario: Open account for a new customer
     And add a new customer with:
       | first_name | last_name | postal_code |
@@ -35,7 +33,6 @@ Feature: Banking Management
     When opens an account for customer
     Then customer has been related to an account
 
-  @test
   Scenario: Delete registered customer in Banking App
     And add a new customer with:
       | first_name | last_name | postal_code |

@@ -23,6 +23,7 @@ export const managementTask = {
 
         page.once('dialog', async (dialog: Dialog) => {
             alertMessage = dialog.message();
+            console.log(alertMessage);
             expect(alertMessage).toEqual('Please check the details. Customer may be duplicate.')
             await dialog.dismiss();
         });
@@ -35,6 +36,7 @@ export const managementTask = {
 
         page.once('dialog', async (dialog: Dialog) => {
             alertMessage = dialog.message();
+            console.log(alertMessage);
             expect(alertMessage).toContain('Customer added successfully')
             await dialog.dismiss();
         });
@@ -62,6 +64,7 @@ export const managementTask = {
 
         page.once('dialog', async (dialog: Dialog) => {
             alertMessage = dialog.message();
+            console.log(alertMessage);
             const match = alertMessage.match(/\d+$/);
             const accountNumber = match ? match[0] : null;
             expect(alertMessage).toContain('Account created successfully');
