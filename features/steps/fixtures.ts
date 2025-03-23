@@ -1,8 +1,9 @@
 import { test as base, createBdd } from 'playwright-bdd';
 import { Customer } from '../../src/dto/customer.dto';
 
-type Ctx = {
-    customer: Customer
+export type Ctx = {
+    customer: Customer,
+    customerAccountNumber: string
 }
 
 export const test = base.extend<{ ctx: Ctx }>({
