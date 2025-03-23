@@ -1,22 +1,33 @@
-import { BrowserContext, Dialog, expect, Page } from "@playwright/test";
+import {  Dialog, expect, Page } from "@playwright/test";
 import { ManagerAccountsPage, ManagerCustomersPage, ManagerPage } from "../pages";
 import * as currencyData from '../constants/currency.json'
 import { Ctx } from "../../features/steps/fixtures";
+import { Customer } from "../dto/customer.dto";
 
 export const managementTask = {
     addCustomerWith: async (
         page: Page,
-        firstName: string,
-        lastName: string,
-        postalCode: string): Promise<void> => {
+        customer: Customer): Promise<void> => {
         const managerPage: ManagerPage = new ManagerPage(page);
 
         await managerPage.addCustomerButton.first().click();
 
-        await managerPage.getCustomerFormInputTextField('First Name').fill(firstName);
-        await managerPage.getCustomerFormInputTextField('Last Name').fill(lastName);
-        await managerPage.getCustomerFormInputTextField('Post Code').fill(postalCode);
+        await managerPage.getCustomerFormInputTextField('First Name').fill(customer.firstName);
+        await managerPage.getCustomerFormInputTextField('Last Name').fill(customer.lastName);
+        await managerPage.getCustomerFormInputTextField('Post Code').fill(customer.postalCode);
 
+    },
+    confirmCustomerAlreadyExists: async(page: Page) => {
+        let alertMessage: string = '';
+        const managerPage: ManagerPage = new ManagerPage(page);
+
+        page.once('dialog', async (dialog: Dialog) => {
+            alertMessage = dialog.message();
+            expect(alertMessage).toEqual('Please check the details. Customer may be duplicate.')
+            await dialog.dismiss();
+        });
+
+        await managerPage.addCustomerButton.last().click();
     },
     checkCustomerIsRegistered: async (page: Page) => {
         let alertMessage: string = '';
@@ -51,11 +62,11 @@ export const managementTask = {
 
         page.once('dialog', async (dialog: Dialog) => {
             alertMessage = dialog.message();
-            const match = alertMessage.match(/\d{4}$/);
+            const match = alertMessage.match(/\d+$/);
             const accountNumber = match ? match[0] : null;
             expect(alertMessage).toContain('Account created successfully');
             ctx.customerAccountNumber = accountNumber || '';
-            await new Promise(f => setTimeout(f, 1000));
+            await new Promise(f => setTimeout(f, 1000)); //this timeout avoids flakiness in test
             await dialog.dismiss();
         });
 
@@ -75,6 +86,14 @@ export const managementTask = {
     validateAccountNumberInCustomerModule: async (page: Page, accountNumber: string) => {
         const managerCustomersPage: ManagerCustomersPage = new ManagerCustomersPage(page);
         await expect(managerCustomersPage.customerAccountValueInRow.first()).toHaveText(accountNumber);
-        //await expect(managerCustomersPage.customerAccountValueInRow.first()).not.toBeEmpty();
+    },
+    deleteCustomerInformation: async (page: Page) => {
+        const managerCustomersPage: ManagerCustomersPage = new ManagerCustomersPage(page);
+        await managerCustomersPage.deleteCustomerButton.click();
+    },
+    verifyCustomerHasBeenDeleted: async (page: Page) => {
+        const managerCustomersPage: ManagerCustomersPage = new ManagerCustomersPage(page);
+        await managerCustomersPage.customerTableRowResultSet.first().waitFor({state: 'hidden'});
+        await expect(managerCustomersPage.customerTableRowResultSet).not.toBeVisible();
     }
 }
