@@ -2,14 +2,24 @@ import { attachEvidence } from "../../src/helpers/report-helper";
 import { DataTable } from 'playwright-bdd';
 import { Given, Then, When } from "./fixtures";
 import { managementTask } from "../../src/tasks/management.task";
+import { Customer } from "../../src/dto/customer.dto";
 
-When('add a new customer with:', async ({page, $testInfo}, customerData: DataTable) => {
-    let customer : Record<string, string> = customerData.hashes().shift() || {};
+When('add a new customer with:', async ({page, ctx}, customerData: DataTable) => {
+    let customerInfo : Record<string, string> = customerData.hashes().shift() || {};
+    const customer : Customer = new Customer(customerInfo.first_name, customerInfo.last_name, customerInfo.postal_code);
+    
+    await managementTask.addCustomerWith(page, customer.firstName, customer.lastName, customer.postalCode);
 
-    await managementTask.addCustomerWith(page, customer.first_name, customer.last_name, customer.postal_code);
+    ctx.customer = customer;
 });
 
-Then('user is successfully registered', async({page, $testInfo}) => {
+Then('customer is successfully registered', async({page, $testInfo}) => {
     await managementTask.checkCustomerIsRegistered(page);
+    await attachEvidence(page, $testInfo);
+});
+
+Then('customer is found in module', async({page, $testInfo, ctx}) => {
+    const storedCustomer : Customer = ctx.customer;
+    await managementTask.searchCustomerInModule(page, storedCustomer.firstName);
     await attachEvidence(page, $testInfo);
 });

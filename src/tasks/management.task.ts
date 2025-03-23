@@ -1,5 +1,5 @@
 import { Dialog, expect, Page } from "@playwright/test";
-import { ManagerPage } from "../pages";
+import { ManagerCustomersPage, ManagerPage } from "../pages";
 
 export const managementTask = {
     addCustomerWith: async (
@@ -27,5 +27,17 @@ export const managementTask = {
         });
 
         await managerPage.addCustomerButton.last().click();
+    },
+    searchCustomerInModule: async (page: Page, firstName: string) => {
+        const managerPage: ManagerPage = new ManagerPage(page);
+        const managerCustomersPage: ManagerCustomersPage = new ManagerCustomersPage(page);
+
+        await managerPage.customersButton.click();
+        await managerCustomersPage.searchCustomerTextBox.fill(firstName);
+        await managerCustomersPage.customerTableRowResultSet.first().waitFor({state: 'visible'});
+
+        await expect(managerCustomersPage.customerTableRowResultSet.first()).toContainText(firstName);
+
+ 
     }
 }
