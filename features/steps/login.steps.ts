@@ -6,6 +6,11 @@ Given('user navigates into the banking site', async ({page}) => {
     await loginTask.navigateTo(page);
 });
 
+Given('user login as {string}', async ({page}, userType: string) => {
+    await loginTask.navigateTo(page);
+    await loginTask.loginAs(page, userType);
+});
+
 When('login as {string}', async ({page, $testInfo}, userType: string) => {
     await loginTask.loginAs(page, userType);
     await attachEvidence(page, $testInfo);
@@ -13,6 +18,11 @@ When('login as {string}', async ({page, $testInfo}, userType: string) => {
 
 Then('user should see the customer home page', async({page, $testInfo}) => {
     await loginTask.verifyCustomerIsLoggedIn(page);
+    await attachEvidence(page, $testInfo);
+});
+
+Then('user should see the management page', async({page, $testInfo}) => {
+    await loginTask.verifyManagerIsLoggedIn(page);
     await attachEvidence(page, $testInfo);
 });
 
