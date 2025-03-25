@@ -37,5 +37,5 @@ export default defineConfig({
       use: { ...devices['Desktop Safari'] },
     }
   ],
-  retries:1
+  retries: 1
 });
