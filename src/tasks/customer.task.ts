@@ -10,7 +10,7 @@ export const customerTask = {
         const customerPage: CustomerPage = new CustomerPage(page);
         const customerDepositPage: CustomerDepositPage = new CustomerDepositPage(page);
         const depositAmount: string = getRandomTransactionAmount().toString();
-        
+
         ctx.transactionAmount = depositAmount;
         await customerPage.getAccountOperationButton('deposit').click();
 
@@ -20,11 +20,5 @@ export const customerTask = {
         await attachEvidence(page, testInfo);
 
         await customerDepositPage.depositButton.last().click();
-    },
-    verifyNewAccountBalance: async (page: Page, newBalanceAmount: number) => {
-        const customerPage: CustomerPage = new CustomerPage(page);
-        const currentBalanceText: string = await customerPage.currentBalanceText.textContent() || '';
-
-        expect(Number.parseInt(currentBalanceText)).toBe(newBalanceAmount)
     }
 }

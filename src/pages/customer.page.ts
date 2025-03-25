@@ -17,7 +17,7 @@ export class CustomerPage {
         this.transactionMessageSpan = page.locator('xpath=//span[@ng-show="message"]');
     }
 
-    public getAccountOperationButton(operationType: string){
+    public getAccountOperationButton(operationType: string) {
         return this.page.locator(`xpath=//button[@ng-click="${operationType}()"]`);
     }
 }

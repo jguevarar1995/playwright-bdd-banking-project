@@ -23,7 +23,6 @@ Feature: Banking Management
     And customer is successfully registered
     And attempts to register the same customer
     Then user should see an alert indicating user already exists
-    
 
   Scenario: Open account for a new customer
     And add a new customer with:

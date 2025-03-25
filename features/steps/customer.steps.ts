@@ -1,6 +1,7 @@
 import { attachEvidence } from "../../src/helpers/report-helper";
 import { CustomerPage } from "../../src/pages";
 import { customerTask } from "../../src/tasks/customer.task";
+import { customerAssert } from "../../src/assertions/customer.assertions";
 import { Then, When } from "./fixtures";
 
 When('makes a deposit transaction', async ({ page, ctx, $testInfo }) => {
@@ -17,5 +18,5 @@ Then('user balance account has been topped up', async ({ page, ctx }) => {
     const depositAmount = ctx.transactionAmount;
 
     const newBalanceAmount = parseInt(previousBalanceAmount) + parseInt(depositAmount);
-    await customerTask.verifyNewAccountBalance(page, newBalanceAmount);
+    await customerAssert.verifyNewAccountBalance(page, newBalanceAmount);
 });
