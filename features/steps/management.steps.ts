@@ -22,7 +22,7 @@ When('opens an account for customer', async ({ page, ctx, $testInfo }) => {
 
 When('deletes the customer information', async ({ page, ctx, $testInfo }) => {
     const storedCustomer: Customer = ctx.customer;
-    await managementTask.searchCustomerInModule(page, storedCustomer.firstName);
+    await managementTask.searchCustomerInModule(page, storedCustomer.firstName || '');
     await attachEvidence(page, $testInfo);
     await managementTask.deleteCustomerInformation(page);
 });
@@ -48,7 +48,7 @@ Then('customer has been related to an account', async ({ page, ctx, $testInfo })
     await managementTask.checkAccountOpenedAlert(page, ctx);
 
     const storedCustomerAccountNumber: string = ctx.customerAccountNumber;
-    await managementTask.searchCustomerInModule(page, storedCustomer.firstName);
+    await managementTask.searchCustomerInModule(page, storedCustomer.firstName || '');
     await managementTask.validateAccountNumberInCustomerModule(page, storedCustomerAccountNumber);
     await attachEvidence(page, $testInfo);
 })
@@ -60,6 +60,6 @@ Then('customer is successfully registered', async ({ page, $testInfo }) => {
 
 Then('customer is found in module', async ({ page, $testInfo, ctx }) => {
     const storedCustomer: Customer = ctx.customer;
-    await managementTask.searchCustomerInModule(page, storedCustomer.firstName);
+    await managementTask.searchCustomerInModule(page, storedCustomer.firstName || '');
     await attachEvidence(page, $testInfo);
 });

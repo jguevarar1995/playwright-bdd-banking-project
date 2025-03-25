@@ -3,7 +3,9 @@ import { Customer } from '../../src/dto/customer.dto';
 
 export type Ctx = {
     customer: Customer,
-    customerAccountNumber: string
+    customerAccountNumber: string,
+    customerCurrentBalanceAcount: string,
+    transactionAmount: string
 }
 
 export const test = base.extend<{ ctx: Ctx }>({

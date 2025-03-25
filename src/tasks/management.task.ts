@@ -12,9 +12,9 @@ export const managementTask = {
 
         await managerPage.addCustomerButton.first().click();
 
-        await managerPage.getCustomerFormInputTextField('First Name').fill(customer.firstName);
-        await managerPage.getCustomerFormInputTextField('Last Name').fill(customer.lastName);
-        await managerPage.getCustomerFormInputTextField('Post Code').fill(customer.postalCode);
+        await managerPage.getCustomerFormInputTextField('First Name').fill(customer.firstName || '');
+        await managerPage.getCustomerFormInputTextField('Last Name').fill(customer.lastName || '');
+        await managerPage.getCustomerFormInputTextField('Post Code').fill(customer.postalCode || '');
 
     },
     confirmCustomerAlreadyExists: async(page: Page) => {

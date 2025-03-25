@@ -1,3 +1,4 @@
+import { Customer } from "../../src/dto/customer.dto";
 import { attachEvidence } from "../../src/helpers/report-helper";
 import { loginTask } from "../../src/tasks/login.task";
 import { Given, Then, When } from "./fixtures";
@@ -16,6 +17,16 @@ When('login as {string}', async ({page, $testInfo}, userType: string) => {
     await attachEvidence(page, $testInfo);
 });
 
+When('login as customer with username {string}', async({page, $testInfo, ctx}, userName: string) => {
+    const customer : Customer = new Customer(userName);
+
+    await loginTask.loginAs(page, 'customer');
+    await loginTask.withName(page, userName);
+    await attachEvidence(page, $testInfo);
+
+    ctx.customer = customer;
+})
+
 Then('user should see the customer home page', async({page, $testInfo}) => {
     await loginTask.verifyCustomerIsLoggedIn(page);
     await attachEvidence(page, $testInfo);
@@ -26,12 +37,9 @@ Then('user should see the management page', async({page, $testInfo}) => {
     await attachEvidence(page, $testInfo);
 });
 
-When('selects {string}', async ({page, $testInfo}, userName: string) => {
-    await loginTask.withName(page, userName);
-    await attachEvidence(page, $testInfo);
-});
+Then('user should see his account details', async ({page, $testInfo, ctx}) => {
+    const storedCustomer : Customer = ctx.customer;
 
-Then('user should see his account details', async ({page, $testInfo}) => {
-    await loginTask.checkAccountDetails(page);
+    await loginTask.checkAccountDetails(page, storedCustomer.firstName || '');
     await attachEvidence(page, $testInfo);
 })
